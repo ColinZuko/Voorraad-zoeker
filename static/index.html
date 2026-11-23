@@ -36,10 +36,12 @@
     <input
       id="q"
       type="search"
+      list="suggestions"
       placeholder="Kleur of soort…"
       autofocus
       autocomplete="off"
     />
+    <datalist id="suggestions"></datalist>
     <ul id="results"></ul>
 
     <script>
@@ -70,6 +72,20 @@
           stock.textContent = p.stock ?? "?";
           li.append(stock);
           list.append(li);
+        }
+        const suggestions = document.getElementById("suggestions");
+        const last = q.toLowerCase().split(" ").pop();
+        const words = new Set();
+        for (const p of products) {
+          for (const w of p.name.toLowerCase().split(/\s+/)) {
+            if (w.startsWith(last) && w !== last) words.add(w);
+          }
+        }
+        suggestions.innerHTML = "";
+        for (const w of words) {
+          const option = document.createElement("option");
+          option.value = q.slice(0, q.length - last.length) + w;
+          suggestions.append(option);
         }
       }
     </script>
