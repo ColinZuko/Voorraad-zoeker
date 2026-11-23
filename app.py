@@ -32,3 +32,7 @@ def search():
                 "status": product["stock_status"],
             })
     return jsonify(results)
+
+@app.get("/")
+def index():
+    return app.send_static_file("index.html")

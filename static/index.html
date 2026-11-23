@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voorraad</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 16px;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 1.2rem;
+        padding: 12px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #ddd;
+      }
+      .outofstock {
+        color: #b00020;
+      }
+    </style>
+  </head>
+  <body>
+    <input
+      id="q"
+      type="search"
+      placeholder="Kleur of soort…"
+      autofocus
+      autocomplete="off"
+    />
+    <ul id="results"></ul>
+
+    <script>
+      const input = document.getElementById("q");
+      const list = document.getElementById("results");
+      let timer;
+
+      input.addEventListener("input", () => {
+        clearTimeout(timer);
+        timer = setTimeout(search, 250);
+      });
+
+      async function search() {
+        const q = input.value.trim();
+        const response = await fetch("/api/search?q=" + encodeURIComponent(q));
+        const products = await response.json();
+        if (q !== input.value.trim()) return;
+
+        list.innerHTML = "";
+        if (q.length >= 2 && products.length === 0) {
+          list.innerHTML = "<li>Niets gevonden</li>";
+        }
+        for (const p of products) {
+          const li = document.createElement("li");
+          li.className = p.status;
+          li.textContent = p.name;
+          const stock = document.createElement("strong");
+          stock.textContent = p.stock ?? "?";
+          li.append(stock);
+          list.append(li);
+        }
+      }
+    </script>
+  </body>
+</html>
