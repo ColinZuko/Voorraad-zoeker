@@ -14,6 +14,8 @@ ACCESS_KEY = os.environ["ACCESS_KEY"]
 
 @app.before_request
 def check_access():
+    if request.path == "/health":
+        return
     given = request.args.get("key", "")
     if not secrets.compare_digest(given.encode(), ACCESS_KEY.encode()):
         abort(403)
@@ -46,3 +48,7 @@ def search():
 @app.get("/")
 def index():
     return app.send_static_file("index.html")
+
+@app.get("/health")
+def health():
+    return "ok"
