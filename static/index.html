@@ -121,7 +121,7 @@
           const { BarcodeDetector } =
             await import("https://cdn.jsdelivr.net/npm/barcode-detector@3.2.3/dist/es/ponyfill.js");
           const detector = new BarcodeDetector({
-            formats: ["ean_13", "ean_8", "upc_a", "upc_e"],
+            formats: ["ean_13", "ean_8", "upc_a", "upc_e", "code_128"],
           });
           stream = await navigator.mediaDevices.getUserMedia({
             video: {
