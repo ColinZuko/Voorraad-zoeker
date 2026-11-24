@@ -40,9 +40,31 @@
         width: 100%;
         margin-top: 8px;
       }
+      summary {
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 12px 0;
+      }
+      #results li {
+        cursor: pointer;
+      }
+      li span {
+        flex: 1;
+      }
+      button.remove {
+        width: auto;
+        margin: 0;
+        padding: 4px 12px;
+      }
     </style>
   </head>
   <body>
+    <details>
+      <summary>Paklijst (<span id="count">0</span>)</summary>
+      <ul id="picklist"></ul>
+      <button id="clear" type="button">Lijst legen</button>
+    </details>
+
     <input
       id="q"
       type="search"
@@ -61,6 +83,71 @@
       const list = document.getElementById("results");
       let timer;
       const key = new URLSearchParams(location.search).get("key") ?? "";
+      const pickUl = document.getElementById("picklist");
+      const LIST_KEY = "paklijst";
+      const MAX_AGE = 12 * 60 * 60 * 1000; // 12 uur
+
+      function loadList() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(LIST_KEY));
+          if (saved && Date.now() - saved.time < MAX_AGE) return saved.items;
+        } catch {}
+        return [];
+      }
+
+      let picklist = loadList();
+
+      function saveList() {
+        try {
+          localStorage.setItem(
+            LIST_KEY,
+            JSON.stringify({ time: Date.now(), items: picklist }),
+          );
+        } catch {}
+        renderList();
+      }
+
+      function addToList(p) {
+        if (!picklist.some((item) => item.id === p.id)) picklist.push(p);
+        saveList();
+      }
+
+      function renderList() {
+        document.getElementById("count").textContent = picklist.length;
+        pickUl.innerHTML = "";
+        for (const item of picklist) {
+          const li = document.createElement("li");
+          const name = document.createElement("span");
+          name.textContent = item.name;
+          const stock = document.createElement("strong");
+          if (item.status === "instock") {
+            stock.textContent = item.stock ?? "?";
+          } else {
+            li.className = "outofstock";
+            stock.textContent = "bijbestellen";
+          }
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "remove";
+          remove.textContent = "✕";
+          remove.setAttribute("aria-label", "Verwijder " + item.name);
+          remove.addEventListener("click", () => {
+            picklist = picklist.filter((x) => x.id !== item.id);
+            saveList();
+          });
+          li.append(name, stock, remove);
+          pickUl.append(li);
+        }
+      }
+
+      document.getElementById("clear").addEventListener("click", () => {
+        if (confirm("Paklijst legen?")) {
+          picklist = [];
+          saveList();
+        }
+      });
+
+      renderList();
 
       input.addEventListener("input", () => {
         clearTimeout(timer);
@@ -93,6 +180,7 @@
           const stock = document.createElement("strong");
           stock.textContent = p.stock ?? "?";
           li.append(stock);
+          li.addEventListener("click", () => addToList(p));
           list.append(li);
         }
         const suggestions = document.getElementById("suggestions");

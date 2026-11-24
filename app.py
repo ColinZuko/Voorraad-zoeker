@@ -31,7 +31,7 @@ def search():
     if len(q) < 2:
         return jsonify([])
 
-    params = {"per_page": 50, "_fields": "name,stock_quantity,stock_status"}
+    params = {"per_page": 50, "_fields": "id,name,stock_quantity,stock_status"}
     if q.isdigit():
         params["global_unique_id"] = q
         words = [] # all([]) is True: bij een barcode houden we alle treffers
@@ -49,6 +49,7 @@ def search():
         name = product["name"]
         if name_matches(name, words):
             results.append({
+                "id": product["id"],
                 "name": name,
                 "stock": product["stock_quantity"],
                 "status": product["stock_status"],
