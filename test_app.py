@@ -11,3 +11,6 @@ def test_alle_woorden_moeten_kloppen():
 
 def test_hoofdletters_maken_niet_uit():
     assert name_matches("PLA ROOD 1kg", ["pla", "rood"])
+
+def test_geen_woorden_past_op_alles():
+    assert name_matches("PLA Rood", [])
