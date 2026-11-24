@@ -31,17 +31,19 @@ def search():
     if len(q) < 2:
         return jsonify([])
 
-    # shortcut: alleen de eerste 50 treffers van WC worden gefiltered; bij te weinig resultaten per page naar 100 of pagineren
+    params = {"per_page": 50, "_fields": "name,stock_quantity,stock_status"}
+    if q.isdigit():
+        params["global_unique_id"] = q
+        words = [] # all([]) is True: bij een barcode houden we alle treffers
+    else:
+        # shortcut: alleen de eerste 50 treffers van WC worden gefiltered; bij te weinig resultaten per page naar 100 of pagineren
+        params["search"] = q
+        words = q.split()
 
-    response = requests.get(
-    WC_URL,
-    auth=WC_AUTH,
-    params={"search": q, "per_page": 50, "_fields": "name,stock_quantity,stock_status"},
-    timeout=10,
-    )
+    response = requests.get(WC_URL, auth=WC_AUTH, params=params, timeout=10)
     response.raise_for_status()
 
-    words = q.split()
+
     results = []
     for product in response.json():
         name = product["name"]
