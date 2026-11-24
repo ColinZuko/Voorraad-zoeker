@@ -1,7 +1,8 @@
 import os
+import secrets
 import requests
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, abort, jsonify, request
 
 load_dotenv()
 
@@ -9,6 +10,15 @@ app = Flask(__name__)
 
 WC_URL = os.environ["WC_URL"] + "/wp-json/wc/v3/products"
 WC_AUTH = (os.environ["WC_KEY"], os.environ["WC_SECRET"])
+ACCESS_KEY = os.environ["ACCESS_KEY"]
+
+@app.before_request
+def check_access():
+    given = request.args.get("key", "")
+    if not secrets.compare_digest(given.encode(), ACCESS_KEY.encode()):
+        abort(403)
+
+
 
 @app.get("/api/search")
 def search():
