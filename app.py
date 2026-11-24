@@ -21,6 +21,9 @@ def check_access():
         abort(403)
 
 
+def name_matches(name, words):
+    return all(word in name.lower() for word in words)
+
 
 @app.get("/api/search")
 def search():
@@ -42,7 +45,7 @@ def search():
     results = []
     for product in response.json():
         name = product["name"]
-        if all(word in name.lower() for word in words):
+        if name_matches(name, words):
             results.append({
                 "name": name,
                 "stock": product["stock_quantity"],
