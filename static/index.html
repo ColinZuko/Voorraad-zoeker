@@ -124,7 +124,11 @@
             formats: ["ean_13", "ean_8", "upc_a", "upc_e"],
           });
           stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment" },
+            video: {
+              facingMode: "environment",
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            },
           });
           video.srcObject = stream;
           video.hidden = false;
