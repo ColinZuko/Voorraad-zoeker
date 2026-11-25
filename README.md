@@ -14,6 +14,7 @@ Een webpagina die als bladwijzer op het beginscherm van een telefoon of tablet s
 
 ## Wat de tool doet
 
+- **Direct resultaat**: zoeken gebeurt in het geheugen van de server, in ongeveer 1,5 ms per zoekopdracht
 - **Live zoeken** terwijl je typt (met debounce: pas zoeken als je even stopt met typen)
 - **Zoeken op productnaam**, ook op een deel van een woord: `easy` vindt Easyfill, `pla rood` vindt rode PLA
 - **Suggesties** om je zoekterm af te maken
@@ -36,25 +37,32 @@ Een webpagina die als bladwijzer op het beginscherm van een telefoon of tablet s
 ## Hoe het werkt
 
 ```
-Telefoon ──► Flask (/api/search) ──► WooCommerce REST API
+                       elke 5 minuten (achtergrond-thread)
+WooCommerce REST API ─────────────────────────────► cache in het geheugen
+                                                     (alle producten)
+                                                          │
+Telefoon ──► Flask (/api/search) ── zoekt in de cache ◄───┘
    ▲                │
-   └── JSON ◄───────┘  (filtert op productnaam, stuurt alleen naam + voorraad + status)
+   └── JSON ◄───────┘
 ```
 
-1. De pagina stuurt de zoekterm, of de gescande barcode, naar `/api/search`.
-2. Bestaat de zoekterm alleen uit cijfers, dan is het een barcode. Flask zoekt dan in WooCommerce op het EAN-veld (`global_unique_id`).
-3. Anders vraagt Flask WooCommerce om producten die bij de zoekterm passen, en houdt hij alleen producten over waarvan de **naam** alle zoekwoorden bevat. WooCommerce zoekt namelijk ook in beschrijvingen.
-4. In beide gevallen haalt Flask alleen de velden op die nodig zijn (`id`, naam, voorraad, status).
-5. De pagina toont het resultaat. De paklijst bewaart de browser zelf, in `localStorage`.
+1. Een achtergrond-thread haalt elke 5 minuten **alle** producten op bij WooCommerce, 100 per pagina. Daarbij vraagt hij alleen de velden op die nodig zijn (`id`, naam, EAN, voorraad, status).
+2. De pagina stuurt de zoekterm, of de gescande barcode, naar `/api/search`.
+3. Bestaat de zoekterm alleen uit cijfers, dan is het een barcode en zoekt Flask in de cache op het EAN-veld (`global_unique_id`).
+4. Anders houdt Flask de producten over waarvan de **naam** alle zoekwoorden bevat.
+5. De pagina toont het resultaat (maximaal 50). De paklijst bewaart de browser zelf, in `localStorage`.
+
+De voorraad die je ziet is dus hooguit 5 minuten oud. Ligt de webshop even plat, dan blijft de laatste lijst gewoon staan.
 
 ## Wat ik geleerd heb
 
-- **Prestaties meten en verbeteren.** Een zoekopdracht duurde 2,3 seconden. Bij het meten bleek dat de API per zoekopdracht 1,2 MB aan productdata stuurde, terwijl ik maar drie velden gebruikte. Met de parameter `_fields` werd dat 4 KB en 1,3 seconden.
+- **Prestaties meten en verbeteren.** Een zoekopdracht duurde 2,3 seconden. Bij het meten bleek dat de API per zoekopdracht 1,2 MB aan productdata stuurde, terwijl ik maar drie velden gebruikte. Met de parameter `_fields` werd dat 4 KB en 1,3 seconden. Daarna heb ik alle producten in een cache gezet: zoeken duurt nu ongeveer 1,5 ms. Daarbij bleek ook dat de oude aanpak producten miste: WooCommerce gaf alleen de eerste 50 treffers terug, dus bij "pla" zag je er 18, terwijl er meer dan 50 zijn.
+- **Werkt lokaal, maar niet op de server.** De cache werkte op mijn pc, maar online vond hij niets, terwijl de logs zeiden dat er 545 producten geladen waren. Door `/health` het aantal producten in de cache te laten tonen, zag ik daar 0. Gunicorn laadt de app in een hoofdproces en maakt daarna een kopie (fork) voor de worker; draaiende threads gaan bij een fork niet mee. De oplossing: de thread pas starten bij het eerste verzoek, in het proces dat de verzoeken echt afhandelt.
 - **Secrets veilig houden.** API-keys staan in een `.env`-bestand (lokaal) en in environment variables (online), nooit in de code of in de git-geschiedenis. De toegangssleutel wordt vergeleken met `secrets.compare_digest`, zodat hij niet via de reactietijd te raden is.
 - **Deployen en monitoren.** Elke `git push` deployt automatisch naar Render. Een aparte `/health`-route, zonder sleutel en zonder WooCommerce-call, laat UptimeRobot de server wakker houden zonder het geheim te kennen.
 - **Onderzoeken in plaats van gokken.** De scanner las de dozen wel, maar de schapkaartjes niet. Door een foto door dezelfde barcodelezer te halen bleek dat de kaartjes geen EAN-barcode zijn maar Code 128. De oplossing was daarna één woord code.
 - **Debuggen.** Foutmeldingen lezen in Python (`NameError`, verkeerd inspringen) en in JavaScript (browserconsole). Ook stille fouten leren herkennen: een typfout als `textContext` geeft geen melding maar alleen lege plekken, en een `catch` die de fout niet logt, laat "Camera niet beschikbaar" zien terwijl het om een typfout gaat.
-- **Testen.** Het zoekfilter staat in een eigen functie met pytest-tests. Daarbij leerde ik dat `all([])` `True` is, en dat gedrag gebruik ik nu bewust bij het zoeken op barcode.
+- **Testen.** Het zoekfilter staat in een eigen functie met pytest-tests. Daardoor kon ik de hele zoekfunctie ombouwen naar de cache en met dezelfde tests controleren dat het filter nog precies hetzelfde werkt. En ik leerde dat `all([])` `True` is.
 - **Werken met Git en Bash.** Commits, `.gitignore`, `git diff` en pushen naar GitHub, allemaal vanaf de commandline.
 
 ## Lokaal draaien
@@ -84,7 +92,7 @@ Telefoon ──► Flask (/api/search) ──► WooCommerce REST API
    ```bash
    flask --app app run --debug
    ```
-5. Open `http://127.0.0.1:5000/?key=JOUW_ACCESS_KEY`
+5. Open `http://127.0.0.1:5000/?key=JOUW_ACCESS_KEY`. Bij het eerste verzoek start de cache; na zo'n 12 seconden verschijnt `Cache ververst: … producten` en werkt het zoeken. `/health` laat zien hoeveel producten er in de cache staan.
 6. Tests draaien:
    ```bash
    pytest
@@ -94,6 +102,7 @@ De camera werkt alleen via HTTPS of op `localhost`. Op een telefoon test je de s
 
 ## Ideeën voor later
 
-- Alle producten in het geheugen bewaren, zodat zoeken direct gaat
+- Een melding als er meer dan 50 resultaten zijn ("typ specifieker")
+- De cache alleen verversen tijdens openingstijden
 - Aantallen in de paklijst (bijvoorbeeld "3× pakken")
 - Een gedeelde paklijst voor alle telefoons (vraagt een database)
