@@ -118,6 +118,14 @@
         margin: 0;
         padding: 4px 12px;
       }
+      #results li.hint {
+        justify-content: center;
+        background: none;
+        border: 0;
+        color: var(--grijs);
+        font-size: 0.9rem;
+        cursor: default;
+      }
     </style>
   </head>
   <body>
@@ -225,11 +233,12 @@
             encodeURIComponent(key),
         );
         if (response.status === 503) {
-          list.innerHTML = "<li>Even geduld, de voorraad wordt geladen...</li>";
+          list.innerHTML =
+            '<li class="hint">Even geduld, de voorraad wordt geladen...</li>';
           return;
         }
         if (!response.ok) {
-          list.innerHTML = "<li>Fout of geen toegang</li>";
+          list.innerHTML = '<li class="hint">Fout of geen toegang</li>';
           return;
         }
         const products = await response.json();
@@ -237,7 +246,7 @@
 
         list.innerHTML = "";
         if (q.length >= 2 && products.length === 0) {
-          list.innerHTML = "<li>Niets gevonden</li>";
+          list.innerHTML = '<li class="hint">Niets gevonden</li>';
         }
         for (const p of products.slice(0, 50)) {
           const li = document.createElement("li");
@@ -251,6 +260,7 @@
         }
         if (products.length > 50) {
           const more = document.createElement("li");
+          more.className = "hint";
           more.textContent = "Meer dan 50 resultaten, typ specifieker";
           list.append(more);
         }
