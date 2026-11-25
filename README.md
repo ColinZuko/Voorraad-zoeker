@@ -6,6 +6,20 @@ Een snelle, mobiele zoektool waarmee winkelpersoneel in een paar tikken ziet hoe
 
 Gebouwd door Colin Delsink tijdens mijn stage bij Fixxar Winterswijk (september 2026 – januari 2027).
 
+## Probeer de demo
+
+👉 **[colinzuko.github.io/Voorraad-zoeker](https://colinzuko.github.io/Voorraad-zoeker/)**
+
+De demo draait dezelfde code als de echte tool, maar met **54 verzonnen producten** in plaats van de echte voorraad van de webshop. Je hebt geen sleutel nodig.
+
+Dingen om te proberen:
+
+- Zoek op `petg`, `pla rood` of `demofil`.
+- Typ de barcode `2000000010014`.
+- Tik op een paar producten en open de **Paklijst**. Uitverkochte producten krijgen het label _bijbestellen_.
+
+De demo draait op een gratis server die in slaap valt als hij niet gebruikt wordt. Het opstarten kan tot een minuut duren; de link toont dan een wachtscherm en stuurt je door zodra de demo klaar is.
+
 ## Het probleem
 
 In de winkel staan vooraan één of twee rollen filament per soort en kleur; de rest ligt achter. Om te weten of er nog voorraad was, moest personeel de klantwebsite doorzoeken of door de winkel lopen. Dat was traag en inefficiënt.
@@ -32,8 +46,8 @@ Een webpagina die als bladwijzer op het beginscherm van een telefoon of tablet s
 - **Data:** WooCommerce REST API (read-only key)
 - **Frontend:** HTML, CSS, JavaScript (zonder framework), `localStorage` voor de paklijst
 - **Barcodes:** [barcode-detector](https://github.com/Sec-ant/barcode-detector) (de `BarcodeDetector`-standaard, met ZXing via WebAssembly, zodat het ook op iPhone werkt)
-- **Tests:** GitHub actions: pytest
-- **Hosting en monitoring:** Render, UptimeRobot
+- **Tests:** pytest, automatisch bij elke push via GitHub Actions
+- **Hosting en monitoring:** Render, UptimeRobot, GitHub Pages (wachtscherm van de demo)
 - **Tools:** Git, Bash, VS Code
 
 ## Hoe het werkt
@@ -65,6 +79,7 @@ De voorraad die je ziet is dus hooguit 5 minuten oud. Ligt de webshop even plat,
 - **Onderzoeken in plaats van gokken.** De scanner las de dozen wel, maar de schapkaartjes niet. Door een foto door dezelfde barcodelezer te halen bleek dat de kaartjes geen EAN-barcode zijn maar Code 128. De oplossing was daarna één woord code.
 - **Debuggen.** Foutmeldingen lezen in Python (`NameError`, verkeerd inspringen) en in JavaScript (browserconsole). Ook stille fouten leren herkennen: een typfout als `textContext` geeft geen melding maar alleen lege plekken, en een `catch` die de fout niet logt, laat "Camera niet beschikbaar" zien terwijl het om een typfout gaat.
 - **Testen.** Het zoekfilter staat in een eigen functie met pytest-tests. Daardoor kon ik de hele zoekfunctie ombouwen naar de cache en met dezelfde tests controleren dat het filter nog precies hetzelfde werkt. En ik leerde dat `all([])` `True` is.
+- **Eén codebase, twee omgevingen.** De echte tool en de publieke demo draaien dezelfde code; alleen de instellingen verschillen. Met `DEMO=1` leest de app nepproducten uit een JSON-bestand en vervalt de sleutel. Zonder die instelling crasht de app bij een ontbrekende sleutel, in plaats van stil open te staan. Omdat een slapende server zelf geen wachtscherm kan tonen, staat dat op GitHub Pages: die pagina maakt de demo wakker (een `fetch` met `mode: "no-cors"`, omdat het een ander domein is) en stuurt door zodra hij antwoordt.
 - **Werken met Git en Bash.** Commits, `.gitignore`, `git diff` en pushen naar GitHub, allemaal vanaf de commandline.
 
 ## Lokaal draaien
@@ -99,6 +114,14 @@ De voorraad die je ziet is dus hooguit 5 minuten oud. Ligt de webshop even plat,
    ```bash
    pytest
    ```
+
+**Alleen de demo draaien,** zonder WooCommerce en zonder `.env`:
+
+```bash
+DEMO=1 flask --app app run --debug
+```
+
+Open dan `http://127.0.0.1:5000/`, zonder sleutel.
 
 De camera werkt alleen via HTTPS of op `localhost`. Op een telefoon test je de scanner dus via de online versie.
 
