@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voorraad-zoeker demo</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 16px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Voorraad-zoeker demo</h1>
+      <p id="status">Even geduld, de demo start op…</p>
+      <p><small id="seconds">0 s</small></p>
+    </div>
+
+    <script>
+      const DEMO_URL = "https://voorraad-zoeker-demo.onrender.com";
+      const status = document.getElementById("status");
+
+      let seconds = 0;
+      setInterval(() => {
+        seconds++;
+        document.getElementById("seconds").textContent = seconds + " s";
+      }, 1000);
+
+      fetch(DEMO_URL + "/health", { mode: "no-cors" })
+        .then(() => location.replace(DEMO_URL))
+        .catch(() => {
+          status.textContent =
+            "De demo reageert niet. Probeer het later opnieuw.";
+        });
+    </script>
+  </body>
+</html>
