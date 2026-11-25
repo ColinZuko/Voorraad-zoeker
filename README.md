@@ -1,5 +1,7 @@
 # Voorraad-zoeker voor FixJeFilament
 
+![Tests](https://github.com/ColinZuko/voorraad-zoeker/actions/workflows/tests.yml/badge.svg)
+
 Een snelle, mobiele zoektool waarmee winkelpersoneel in een paar tikken ziet hoeveel filament er nog op voorraad is.
 
 Gebouwd door Colin Delsink tijdens mijn stage bij Fixxar Winterswijk (september 2026 – januari 2027).
@@ -20,7 +22,7 @@ Een webpagina die als bladwijzer op het beginscherm van een telefoon of tablet s
 - **Suggesties** om je zoekterm af te maken
 - **Barcodes scannen** met de camera: EAN op de dozen en Code 128 op de schapkaartjes, op Android en iPhone. Een barcode met de hand intypen werkt ook.
 - **Voorraadstatus in één oogopslag**: uitverkochte producten staan in het rood
-- **Paklijst**: tik op een product om het op de lijst te zetten. Producten die op zijn krijgen het label *bijbestellen*. Items verwijder je met ✕, de lijst leeg je met één knop of hij leegt zichzelf na 12 uur.
+- **Paklijst**: tik op een product om het op de lijst te zetten. Producten die op zijn krijgen het label _bijbestellen_. Items verwijder je met ✕, de lijst leeg je met één knop of hij leegt zichzelf na 12 uur.
 - **Gemaakt voor de telefoon**, als bladwijzer op het beginscherm
 - **Afgeschermd** met een geheime sleutel in de link
 
@@ -30,7 +32,7 @@ Een webpagina die als bladwijzer op het beginscherm van een telefoon of tablet s
 - **Data:** WooCommerce REST API (read-only key)
 - **Frontend:** HTML, CSS, JavaScript (zonder framework), `localStorage` voor de paklijst
 - **Barcodes:** [barcode-detector](https://github.com/Sec-ant/barcode-detector) (de `BarcodeDetector`-standaard, met ZXing via WebAssembly, zodat het ook op iPhone werkt)
-- **Tests:** pytest
+- **Tests:** GitHub actions: pytest
 - **Hosting en monitoring:** Render, UptimeRobot
 - **Tools:** Git, Bash, VS Code
 
