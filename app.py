@@ -109,7 +109,7 @@ def search():
                 "stock": p["stock_quantity"],
                 "status": p["stock_status"],
             }
-            for p in matches[:50]
+            for p in matches[:51]  # zodat de pagina weet dat er meer dan 50 zijn
         ]
     )
 

@@ -162,6 +162,10 @@
             "&key=" +
             encodeURIComponent(key),
         );
+        if (response.status === 503) {
+          list.innerHTML = "<li>Even geduld, de voorraad wordt geladen...</li>";
+          return;
+        }
         if (!response.ok) {
           list.innerHTML = "<li>Fout of geen toegang</li>";
           return;
@@ -173,7 +177,7 @@
         if (q.length >= 2 && products.length === 0) {
           list.innerHTML = "<li>Niets gevonden</li>";
         }
-        for (const p of products) {
+        for (const p of products.slice(0, 50)) {
           const li = document.createElement("li");
           li.className = p.status;
           li.textContent = p.name;
@@ -182,6 +186,11 @@
           li.append(stock);
           li.addEventListener("click", () => addToList(p));
           list.append(li);
+        }
+        if (products.length > 50) {
+          const more = document.createElement("li");
+          more.textContent = "Meer dan 50 resultaten, typ specifieker";
+          list.append(more);
         }
         const suggestions = document.getElementById("suggestions");
         const last = q.toLowerCase().split(" ").pop();
