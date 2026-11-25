@@ -1,0 +1,19 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      WC_URL: https://example.com
+      WC_KEY: nep
+      WC_SECRET: nep
+      ACCESS_KEY: nep
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - run: pip install -r requirements.txt
+      - run: pytest
