@@ -5,16 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Voorraad</title>
     <style>
+      :root {
+        --groen: #95c11e;
+        --inkt: #1b2016;
+        --grijs: #7b8273;
+        --lijn: #e7eae2;
+        --zacht: #f5f7f1;
+        --rood: #b00020;
+      }
       body {
         font-family: system-ui, sans-serif;
         margin: 0;
         padding: 16px;
+        background: var(--zacht);
+        color: var(--inkt);
       }
       input {
         width: 100%;
         box-sizing: border-box;
         font-size: 1.2rem;
+        padding: 12px 14px;
+        border: 2px solid var(--lijn);
+        border-radius: 12px;
+        background: #fff;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--groen);
+      }
+      button {
+        width: 100%;
+        margin-top: 8px;
         padding: 12px;
+        font-size: 1.1rem;
+        border: 1px solid var(--lijn);
+        border-radius: 12px;
+        background: #fff;
+        color: var(--inkt);
+      }
+      #scan {
+        background: var(--groen);
+        border-color: var(--groen);
+        font-weight: bold;
       }
       ul {
         list-style: none;
@@ -23,33 +55,63 @@
       li {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid #ddd;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+        background: #fff;
+        border: 1px solid var(--lijn);
+        border-radius: 12px;
       }
-      .outofstock {
-        color: #b00020;
+      li span {
+        flex: 1;
       }
-      button {
-        width: 100%;
-        margin-top: 8px;
-        padding: 12px;
-        font-size: 1.1rem;
+      li strong {
+        background: #eef6da;
+        color: #4a6410;
+        border-radius: 999px;
+        padding: 2px 10px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+      .outofstock strong {
+        background: #fbe9ea;
+        color: var(--rood);
+      }
+      #results li {
+        cursor: pointer;
       }
       video {
         width: 100%;
         margin-top: 8px;
+        border-radius: 12px;
+      }
+      details {
+        background: #fff;
+        border: 1px solid var(--lijn);
+        border-radius: 12px;
+        padding: 0 14px;
+        margin-bottom: 10px;
       }
       summary {
         font-size: 1.2rem;
         font-weight: bold;
         padding: 12px 0;
       }
-      #results li {
-        cursor: pointer;
+      #count {
+        background: var(--groen);
+        border-radius: 999px;
+        padding: 0 8px;
       }
-      li span {
-        flex: 1;
+      #picklist li {
+        margin: 0;
+        padding: 10px 0;
+        border: 0;
+        border-top: 1px solid var(--lijn);
+        border-radius: 0;
+      }
+      #clear {
+        margin-bottom: 12px;
       }
       button.remove {
         width: auto;
@@ -60,7 +122,7 @@
   </head>
   <body>
     <details>
-      <summary>Paklijst (<span id="count">0</span>)</summary>
+      <summary>Paklijst <span id="count">0</span></summary>
       <ul id="picklist"></ul>
       <button id="clear" type="button">Lijst legen</button>
     </details>
