@@ -50,7 +50,16 @@ def refresh_loop():
         time.sleep(REFRESH_SECONDS)
 
 
-threading.Thread(target=refresh_loop, daemon=True).start()
+refresher = None
+
+
+@app.before_request
+def start_refresher():
+    global refresher
+    # na een fork (gunicorn) leeft de thread van het hoofdproces niet mee; dan hier opnieuw starten
+    if refresher is None or not refresher.is_alive():
+        refresher = threading.Thread(target=refresh_loop, daemon=True)
+        refresher.start()
 
 
 @app.before_request
