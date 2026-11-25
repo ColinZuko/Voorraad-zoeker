@@ -35,16 +35,17 @@ Een webpagina die als bladwijzer op het beginscherm van een telefoon of tablet s
 - **Zoeken op productnaam**, ook op een deel van een woord: `easy` vindt Easyfill, `pla rood` vindt rode PLA
 - **Suggesties** om je zoekterm af te maken
 - **Barcodes scannen** met de camera: EAN op de dozen en Code 128 op de schapkaartjes, op Android en iPhone. Een barcode met de hand intypen werkt ook.
-- **Voorraadstatus in één oogopslag**: uitverkochte producten staan in het rood
+- **Voorraadstatus in één oogopslag**: de voorraad staat in een groen label, uitverkochte producten krijgen een rood label
+- **Duidelijke meldingen**: zijn er meer dan 50 treffers, dan vraagt de pagina om specifieker te typen. Is de server net opgestart, dan zie je "voorraad wordt geladen" in plaats van een foutmelding.
 - **Paklijst**: tik op een product om het op de lijst te zetten. Producten die op zijn krijgen het label _bijbestellen_. Items verwijder je met ✕, de lijst leeg je met één knop of hij leegt zichzelf na 12 uur.
-- **Gemaakt voor de telefoon**, als bladwijzer op het beginscherm
+- **Gemaakt voor de telefoon**, als bladwijzer op het beginscherm, in de huisstijl van Fixxar
 - **Afgeschermd** met een geheime sleutel in de link
 
 ## Gebouwd met
 
 - **Backend:** Python, Flask, Gunicorn
 - **Data:** WooCommerce REST API (read-only key)
-- **Frontend:** HTML, CSS, JavaScript (zonder framework), `localStorage` voor de paklijst
+- **Frontend:** HTML, CSS (met CSS-variabelen voor de huisstijlkleuren), JavaScript (zonder framework), `localStorage` voor de paklijst
 - **Barcodes:** [barcode-detector](https://github.com/Sec-ant/barcode-detector) (de `BarcodeDetector`-standaard, met ZXing via WebAssembly, zodat het ook op iPhone werkt)
 - **Tests:** pytest, automatisch bij elke push via GitHub Actions
 - **Hosting en monitoring:** Render, UptimeRobot, GitHub Pages (wachtscherm van de demo)
@@ -66,7 +67,7 @@ Telefoon ──► Flask (/api/search) ── zoekt in de cache ◄───┘
 2. De pagina stuurt de zoekterm, of de gescande barcode, naar `/api/search`.
 3. Bestaat de zoekterm alleen uit cijfers, dan is het een barcode en zoekt Flask in de cache op het EAN-veld (`global_unique_id`).
 4. Anders houdt Flask de producten over waarvan de **naam** alle zoekwoorden bevat.
-5. De pagina toont het resultaat (maximaal 50). De paklijst bewaart de browser zelf, in `localStorage`.
+5. De pagina toont het resultaat (maximaal 50). Flask stuurt er 51 terug: is er een 51e, dan weet de pagina dat er meer zijn en toont ze een melding. De paklijst bewaart de browser zelf, in `localStorage`.
 
 De voorraad die je ziet is dus hooguit 5 minuten oud. Ligt de webshop even plat, dan blijft de laatste lijst gewoon staan.
 
@@ -80,6 +81,7 @@ De voorraad die je ziet is dus hooguit 5 minuten oud. Ligt de webshop even plat,
 - **Debuggen.** Foutmeldingen lezen in Python (`NameError`, verkeerd inspringen) en in JavaScript (browserconsole). Ook stille fouten leren herkennen: een typfout als `textContext` geeft geen melding maar alleen lege plekken, en een `catch` die de fout niet logt, laat "Camera niet beschikbaar" zien terwijl het om een typfout gaat.
 - **Testen.** Het zoekfilter staat in een eigen functie met pytest-tests. Daardoor kon ik de hele zoekfunctie ombouwen naar de cache en met dezelfde tests controleren dat het filter nog precies hetzelfde werkt. En ik leerde dat `all([])` `True` is.
 - **Eén codebase, twee omgevingen.** De echte tool en de publieke demo draaien dezelfde code; alleen de instellingen verschillen. Met `DEMO=1` leest de app nepproducten uit een JSON-bestand en vervalt de sleutel. Zonder die instelling crasht de app bij een ontbrekende sleutel, in plaats van stil open te staan. Omdat een slapende server zelf geen wachtscherm kan tonen, staat dat op GitHub Pages: die pagina maakt de demo wakker (een `fetch` met `mode: "no-cors"`, omdat het een ander domein is) en stuurt door zodra hij antwoordt.
+- **Huisstijl zonder snelheid te verliezen.** Eerst een ontwerp gemaakt, daarna alleen CSS toegevoegd: geen webfont, plaatjes of extra bestanden, dus de pagina laadt even snel. De kleuren staan één keer bovenaan als CSS-variabelen. Ook geleerd hoe specificiteit werkt: `#picklist li` wint van `li`, zodat de paklijst gewone regels krijgt in plaats van kaartjes.
 - **Werken met Git en Bash.** Commits, `.gitignore`, `git diff` en pushen naar GitHub, allemaal vanaf de commandline.
 
 ## Lokaal draaien
@@ -127,7 +129,6 @@ De camera werkt alleen via HTTPS of op `localhost`. Op een telefoon test je de s
 
 ## Ideeën voor later
 
-- Een melding als er meer dan 50 resultaten zijn ("typ specifieker")
 - De cache alleen verversen tijdens openingstijden
 - Aantallen in de paklijst (bijvoorbeeld "3× pakken")
 - Een gedeelde paklijst voor alle telefoons (vraagt een database)
