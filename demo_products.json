@@ -1,0 +1,380 @@
+[
+  {
+    "id": 1001,
+    "name": "DemoFil PLA Geel 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010014"
+  },
+  {
+    "id": 1002,
+    "name": "DemoFil PLA Zwart 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010021"
+  },
+  {
+    "id": 1003,
+    "name": "DemoFil PLA Oranje 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010038"
+  },
+  {
+    "id": 1004,
+    "name": "DemoFil PLA Matte Geel 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010045"
+  },
+  {
+    "id": 1005,
+    "name": "DemoFil PLA Matte Rood 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010052"
+  },
+  {
+    "id": 1006,
+    "name": "DemoFil PLA Matte Wit 1kg",
+    "stock_quantity": 8,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010069"
+  },
+  {
+    "id": 1007,
+    "name": "DemoFil PETG Oranje 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010076"
+  },
+  {
+    "id": 1008,
+    "name": "DemoFil PETG Blauw 1kg",
+    "stock_quantity": 8,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010083"
+  },
+  {
+    "id": 1009,
+    "name": "DemoFil PETG Wit 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010090"
+  },
+  {
+    "id": 1010,
+    "name": "DemoFil ABS Zilver 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010106"
+  },
+  {
+    "id": 1011,
+    "name": "DemoFil ABS Blauw 1kg",
+    "stock_quantity": 8,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010113"
+  },
+  {
+    "id": 1012,
+    "name": "DemoFil ABS Wit 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010120"
+  },
+  {
+    "id": 1013,
+    "name": "DemoFil TPU Wit 1kg",
+    "stock_quantity": 3,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010137"
+  },
+  {
+    "id": 1014,
+    "name": "DemoFil TPU Rood 1kg",
+    "stock_quantity": 8,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010144"
+  },
+  {
+    "id": 1015,
+    "name": "DemoFil TPU Zwart 1kg",
+    "stock_quantity": 1,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010151"
+  },
+  {
+    "id": 1016,
+    "name": "DemoFil PLA Silk Paars 1kg",
+    "stock_quantity": 1,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010168"
+  },
+  {
+    "id": 1017,
+    "name": "DemoFil PLA Silk Blauw 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010175"
+  },
+  {
+    "id": 1018,
+    "name": "DemoFil PLA Silk Groen 1kg",
+    "stock_quantity": 2,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010182"
+  },
+  {
+    "id": 1019,
+    "name": "PrintPro PLA Geel 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010199"
+  },
+  {
+    "id": 1020,
+    "name": "PrintPro PLA Blauw 1kg",
+    "stock_quantity": 2,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010205"
+  },
+  {
+    "id": 1021,
+    "name": "PrintPro PLA Paars 1kg",
+    "stock_quantity": 12,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010212"
+  },
+  {
+    "id": 1022,
+    "name": "PrintPro PLA Matte Paars 1kg",
+    "stock_quantity": 12,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010229"
+  },
+  {
+    "id": 1023,
+    "name": "PrintPro PLA Matte Oranje 1kg",
+    "stock_quantity": 12,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010236"
+  },
+  {
+    "id": 1024,
+    "name": "PrintPro PLA Matte Geel 1kg",
+    "stock_quantity": 5,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010243"
+  },
+  {
+    "id": 1025,
+    "name": "PrintPro PETG Groen 1kg",
+    "stock_quantity": 2,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010250"
+  },
+  {
+    "id": 1026,
+    "name": "PrintPro PETG Wit 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010267"
+  },
+  {
+    "id": 1027,
+    "name": "PrintPro PETG Zwart 1kg",
+    "stock_quantity": 3,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010274"
+  },
+  {
+    "id": 1028,
+    "name": "PrintPro ABS Paars 1kg",
+    "stock_quantity": 12,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010281"
+  },
+  {
+    "id": 1029,
+    "name": "PrintPro ABS Grijs 1kg",
+    "stock_quantity": 3,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010298"
+  },
+  {
+    "id": 1030,
+    "name": "PrintPro ABS Geel 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010304"
+  },
+  {
+    "id": 1031,
+    "name": "PrintPro TPU Blauw 1kg",
+    "stock_quantity": 1,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010311"
+  },
+  {
+    "id": 1032,
+    "name": "PrintPro TPU Paars 1kg",
+    "stock_quantity": 5,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010328"
+  },
+  {
+    "id": 1033,
+    "name": "PrintPro TPU Oranje 1kg",
+    "stock_quantity": 1,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010335"
+  },
+  {
+    "id": 1034,
+    "name": "PrintPro PLA Silk Grijs 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010342"
+  },
+  {
+    "id": 1035,
+    "name": "PrintPro PLA Silk Oranje 1kg",
+    "stock_quantity": 5,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010359"
+  },
+  {
+    "id": 1036,
+    "name": "PrintPro PLA Silk Rood 1kg",
+    "stock_quantity": 5,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010366"
+  },
+  {
+    "id": 1037,
+    "name": "Filamento PLA Geel 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010373"
+  },
+  {
+    "id": 1038,
+    "name": "Filamento PLA Grijs 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010380"
+  },
+  {
+    "id": 1039,
+    "name": "Filamento PLA Paars 1kg",
+    "stock_quantity": 3,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010397"
+  },
+  {
+    "id": 1040,
+    "name": "Filamento PLA Matte Grijs 1kg",
+    "stock_quantity": 3,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010403"
+  },
+  {
+    "id": 1041,
+    "name": "Filamento PLA Matte Blauw 1kg",
+    "stock_quantity": 12,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010410"
+  },
+  {
+    "id": 1042,
+    "name": "Filamento PLA Matte Rood 1kg",
+    "stock_quantity": 3,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010427"
+  },
+  {
+    "id": 1043,
+    "name": "Filamento PETG Oranje 1kg",
+    "stock_quantity": 12,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010434"
+  },
+  {
+    "id": 1044,
+    "name": "Filamento PETG Geel 1kg",
+    "stock_quantity": 5,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010441"
+  },
+  {
+    "id": 1045,
+    "name": "Filamento PETG Rood 1kg",
+    "stock_quantity": 1,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010458"
+  },
+  {
+    "id": 1046,
+    "name": "Filamento ABS Zilver 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010465"
+  },
+  {
+    "id": 1047,
+    "name": "Filamento ABS Blauw 1kg",
+    "stock_quantity": 2,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010472"
+  },
+  {
+    "id": 1048,
+    "name": "Filamento ABS Grijs 1kg",
+    "stock_quantity": 3,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010489"
+  },
+  {
+    "id": 1049,
+    "name": "Filamento TPU Zwart 1kg",
+    "stock_quantity": 8,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010496"
+  },
+  {
+    "id": 1050,
+    "name": "Filamento TPU Wit 1kg",
+    "stock_quantity": 12,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010502"
+  },
+  {
+    "id": 1051,
+    "name": "Filamento TPU Oranje 1kg",
+    "stock_quantity": 0,
+    "stock_status": "outofstock",
+    "global_unique_id": "2000000010519"
+  },
+  {
+    "id": 1052,
+    "name": "Filamento PLA Silk Zwart 1kg",
+    "stock_quantity": 3,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010526"
+  },
+  {
+    "id": 1053,
+    "name": "Filamento PLA Silk Grijs 1kg",
+    "stock_quantity": 1,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010533"
+  },
+  {
+    "id": 1054,
+    "name": "Filamento PLA Silk Oranje 1kg",
+    "stock_quantity": 8,
+    "stock_status": "instock",
+    "global_unique_id": "2000000010540"
+  }
+]

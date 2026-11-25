@@ -3,6 +3,7 @@ import secrets
 import requests
 import threading
 import time
+import json
 from dotenv import load_dotenv
 from flask import Flask, abort, jsonify, request
 
@@ -10,14 +11,24 @@ load_dotenv()
 
 app = Flask(__name__)
 
-WC_URL = os.environ["WC_URL"] + "/wp-json/wc/v3/products"
-WC_AUTH = (os.environ["WC_KEY"], os.environ["WC_SECRET"])
-ACCESS_KEY = os.environ["ACCESS_KEY"]
+DEMO = os.environ.get("DEMO") == "1"
+
+if not DEMO:
+    WC_URL = os.environ["WC_URL"] + "/wp-json/wc/v3/products"
+    WC_AUTH = (os.environ["WC_KEY"], os.environ["WC_SECRET"])
+    ACCESS_KEY = os.environ["ACCESS_KEY"]
+
+
 REFRESH_SECONDS = 5 * 60  # 5 minuten
 products = []  # cache alle producten uit WooCommerce
 
 
 def fetch_all_products():
+    if DEMO:
+        path = os.path.join(os.path.dirname(__file__), "demo_products.json")
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+
     result = []
     page = 1
     while True:
@@ -64,7 +75,7 @@ def start_refresher():
 
 @app.before_request
 def check_access():
-    if request.path == "/health":
+    if DEMO or request.path == "/health":
         return
     given = request.args.get("key", "")
     if not secrets.compare_digest(given.encode(), ACCESS_KEY.encode()):

@@ -1,4 +1,13 @@
+import json
 from app import name_matches
+
+
+def test_demo_producten_hebben_alle_velden():
+    with open("demo_products.json", encoding="utf-8") as f:
+        products = json.load(f)
+        assert len(products) > 0
+        for p in products:
+            assert {"id", "name", "stock_quantity", "stock_status", "global_unique_id"} <= p.keys()
 
 
 def test_deel_van_woord():
