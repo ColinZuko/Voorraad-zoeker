@@ -72,6 +72,9 @@ def search():
     if len(q) < 2:
         return jsonify([])
 
+    if not products:
+        return jsonify({"error": "Voorraad wordt geladen"}), 503
+
     if q.isdigit():
         matches = [p for p in products if p["global_unique_id"] == q]
     else:
@@ -98,4 +101,4 @@ def index():
 
 @app.get("/health")
 def health():
-    return "ok"
+    return f"ok, {len(products)} producten in cache"
