@@ -72,7 +72,7 @@ def check_access():
 
 
 def name_matches(name, words):
-    return any(word in name.lower() for word in words)
+    return all(word in name.lower() for word in words)
 
 
 @app.get("/api/search")
